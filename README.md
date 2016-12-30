@@ -21,3 +21,10 @@ creates new page numbers and a table of contents with the upper part of
 the first page. Hence, if you bind scientific papers, you will see the headers
 of the files including title and authors in the table of contents. 
 
+# Amazon Push
+
+Amazon Cloud Drive is a nice service for storing files in the cloud. Here, I 
+provide some scripts for pushing and pulling directories to and from Amazon
+including strong GPG encryption for the actual file contents. Note that
+directory listings are pushed *unencrypted*. I use them for searching specific
+files.

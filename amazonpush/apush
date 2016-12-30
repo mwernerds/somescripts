@@ -1,0 +1,10 @@
+#!/bin/bash
+
+function die()
+{
+   echo $@
+   exit;
+}
+
+test -d "$1" || die "You can only push directories to the timeline";
+rclone -v copy "$1" "acd:Timeline/$1" 

@@ -1,0 +1,35 @@
+#!/bin/bash
+
+#
+# A small tool to push encrypted directory to Amazon
+#
+
+# Takes a single argument for the directory to be pushed
+
+#!/bin/bash
+
+function die()
+{
+   echo $@
+   exit;
+}
+
+test -d "$1" || die "You can only push directories to the timeline";
+test -d "tmp" && die "Delete tmp directory"
+# Tar
+
+target=${1%/}
+echo "<$target>"
+
+echo "Packing $1"
+mkdir tmp 
+tar -czf "tmp/$target.tgz" "$1" || die "Error while tar"
+tar -tf "tmp/$target.tgz" > "tmp/$target.tgz.list" || die "Error while listing tar"
+echo "Encrypting $1"
+gpg --encrypt -r "Martin Werner (CloudKey) <martin@martinwerner.de>" "tmp/$target.tgz" || die "Error while gpg"
+rm -f "tmp/$target.tgz"
+rclone -v copy "tmp" "acd:Encrypted/$1"  || die "Error uploading"
+
+rm tmp -Rf
+
+

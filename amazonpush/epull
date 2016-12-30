@@ -1,0 +1,37 @@
+#!/bin/bash
+
+#
+# A small tool to pull encrypted directories from Amazon
+#
+
+# Takes a single argument for the directory to be pulled
+
+#!/bin/bash
+
+function msg()
+{
+   echo -e "\e[1;32m$@\e[0m" 
+
+}
+
+function die()
+{
+   echo $@
+   exit;
+}
+
+test -e "$1" && die "You can only pull directories that do not exist locally";
+test -d "tmp" && die "Delete tmp directory"
+# Tar
+
+target=${1%/}
+echo "<$target>"
+msg "Pulling from Amazon"
+
+rclone -v copy "acd:Encrypted/$1/$target.tgz.gpg" "."  || die "Error downloading"
+test -f "$target.tgz.gpg" || die "Download file not here"
+msg "Decrypting and Unpacking"
+gpg --decrypt -r "Martin Werner (CloudKey) <martin@martinwerner.de>"  "$target.tgz.gpg"| \
+  tar -xz || die "Problem decrypting"
+msg Cleanup and finalize
+rm -f "$target.tgz.gpg"
