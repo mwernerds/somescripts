@@ -9,9 +9,19 @@ if [ "$1" == "-d" ]; then
 MAKE_OPTS="$MAKE_OPTS ROPTS=--interactive"
 fi
 
+
+
+
+
 cp /usr/share/Wmd/Makefile .
 
+if [ "$1" == "-s" ]; then
+echo "Use wmd makefile and exit"
+bash
+else
 make $MAKE_OPTS
+fi
+
 
 rm Makefile
 
