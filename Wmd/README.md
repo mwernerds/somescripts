@@ -3,7 +3,8 @@ sed inside the Makefile:
 
 It allows for specifying an R figure using a single f followed by the figure
 title. Additionally, you can format tweets inside your text. Therefore, you 
-should modify tweet.php to suit your needs. 
+should modify tweet.php to suit your needs (via information and tags are
+hardcoded...). 
 
 When installed (using dpkg or your favourite package manager), you can run
 wmd in any directory you like to generate HTML from Wmd files including caching
