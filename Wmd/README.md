@@ -11,5 +11,7 @@ wmd in any directory you like to generate HTML from Wmd files including caching
 and some options (look at the Makefile in /usr/share/Wmd) I use for my
 web pages.
 
-Hope this helps (as a starting point).
-
+Hope this helps (as a starting point). Especially 
+wmd -s might be helpful, which spawns a shell with a 
+Makefile in place. You can then just do `make myfile.md` to
+generate plain Markdown (with R expanded) or `make myfile.html` to create HTML...
