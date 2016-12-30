@@ -14,5 +14,10 @@ well as a shortcut for embedded figures with caption. But, mainly, it allows
 you to use R markdown with caching and with auto-detection of changed files from
 command line with a single command `wmd`.
 
-
+# makepdfreader
+makepdfreader is a single shell script that takes all existing pdf files in the
+current directory and binds them into a single pdf file. Additionally, it
+creates new page numbers and a table of contents with the upper part of
+the first page. Hence, if you bind scientific papers, you will see the headers
+of the files including title and authors in the table of contents. 
 

@@ -1,0 +1,82 @@
+#!/bin/bash
+
+# Create Latex File
+
+echo -n "Titel: "; 
+read TITLE
+TITLE=$(echo $TITLE | tr -d "\n")
+
+# big help from this one: http://tex.stackexchange.com/questions/31518/adding-a-per-chapter-image-along-with-group-of-entries-in-toc
+# and this one: http://tex.stackexchange.com/questions/20640/how-to-add-border-for-an-image
+
+cat << EOF > reader.tex
+\documentclass[a4paper,twoside]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[cm]{fullpage}
+\usepackage[T1]{fontenc}
+\usepackage{pdfpages}
+\usepackage{fancyhdr}
+
+\usepackage{geometry}
+\usepackage{titletoc}
+\usepackage[export]{adjustbox}
+\usepackage{xparse}
+\NewDocumentCommand{\ltocstuff}{O{175pt} m O{20pt}}{% \ltocstuff[<width>]{<content>}[<gap>]
+    \titlecontents{section}
+      [0pt]% left margin indent
+      {\bigskip\bfseries}% chapter ToC formatting
+      {%\smash{% remove vertical height of image
+         \raisebox{1.5ex}{% align with top of character
+           \rlap{% right overlap
+             #2% actual content
+           }\hspace*{#1}% space for <content>
+       }%}%
+       \hspace*{#3}% gap between <content> and ToC entries
+       \makebox[1.5em][l]{\thecontentslabel}}% chapter label (numbered)
+      {%\smash{% remove vertical height of image
+         \raisebox{1.5ex}{% align with top of character
+           \rlap{% right overlap
+             #2% actual <content>
+           }\hspace*{#1}% space for <content>
+       }%}%
+       \hspace*{1.5em}}% chapter label (unnumbered)
+      {\titlerule*[1pc]{.}% dotted contents line
+       \thecontentspage% ToC page number
+      }
+}
+
+\fancypagestyle{readerstyle}{
+	\fancyhf{} % clear all header and footers
+	\renewcommand{\headrulewidth}{0pt} 
+%	\renewcommand{\footskip}{60pt}
+	\fancyfoot[OR,EL]{\vspace{30mm}\thepage}
+}
+\renewcommand{\contentsname}{}
+\date{\today}
+\title{PDF Reader\\\\ $TITLE}
+\begin{document}
+\maketitle
+\tableofcontents
+\cleardoublepage
+\pagestyle{readerstyle}
+EOF
+
+
+pngs=""
+i=0
+for f in *.pdf; do
+	if [ "$f" == "reader.pdf" ]; then continue; fi
+	convert "$f"[0] -crop 100%x35%+0+50% "$i.png"
+	pngs="$pngs $i.png"
+	echo "\ltocstuff{\includegraphics[valign=T,width=175pt,frame]{$i}}\addcontentsline{toc}{section}{}\includepdf[scale=0.95,pages=-,pagecommand={\thispagestyle{readerstyle}}]{$f} \cleardoublepage" >> reader.tex
+	let i=i+1
+	#thumbpdf --noclean "$f"
+done
+echo "\end{document}" >> reader.tex
+pdflatex reader.tex
+pdflatex reader.tex
+pdflatex reader.tex
+mv reader.pdf "$TITLE".pdf
+rm -f reader.*
+rm -f $pngs
+

@@ -1,0 +1,10 @@
+Package: makepdfreader
+Version: 1.0-2
+Section: base
+Priority: optional
+Architecture: all
+Maintainer: Martin Werner <martin.werner@ifi.lmu.de>
+Description: Combine Several PDF files into a book-style reader
+ Collects all PDF files in local directory into a single, double-sided format.
+ Creates new pagenumbers and a Table-of-Contents based on the upper part of the
+ first page of the individual PDF files.
