@@ -1,4 +1,4 @@
-<?
+<?php
    $article = file_get_contents("php://stdin");
    $pos = 0;
    while(($pos = strpos($article, "*tweet:",$pos)) !== FALSE)

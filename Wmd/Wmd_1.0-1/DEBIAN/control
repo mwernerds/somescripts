@@ -3,7 +3,7 @@ Version: 1.0-1
 Section: base
 Priority: optional
 Architecture: all
-Depends: make, php5-cli
+Depends: make, php5-cli, pandoc
 Maintainer: Martin Werner <martin.werner@ifi.lmu.de>
 Description: Translates W-Markdown to html
  Wmd is an extension to markdown covering R integration, twitter and 
